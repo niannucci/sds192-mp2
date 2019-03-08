@@ -1,6 +1,6 @@
 ---
 title: "Mini-Project 2"
-author: "Natalia Iannucci and "
+author: "Natalia Iannucci and Hana Hirano"
 date: "2019-03-24"
 output: 
   html_document:
