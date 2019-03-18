@@ -20,6 +20,7 @@ load("committees.rda")
 load("contributions.rda")
 ```
 
+<<<<<<< HEAD
 ```{r, message = FALSE}
 contributions_to_elections <- contributions %>%
   inner_join(house_elections, by = c("cand_id" = "fec_id"))
@@ -27,3 +28,12 @@ contributions_to_elections <- contributions %>%
 ```
 
 > Word count: `r wordcountaddin::word_count()`
+=======
+> Word count: `r wordcountaddin::word_count()`
+
+```{r}
+contribution_data <- select(contributions, transaction_type, transaction_amt, cand_id)
+house_election_data <- select(house_elections, fec_id, party, ge_winner)
+```
+
+>>>>>>> 79b4092e60458ab75310f4949683187e16084fe1
