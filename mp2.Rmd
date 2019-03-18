@@ -20,6 +20,7 @@ load("committees.rda")
 load("contributions.rda")
 ```
 
+
 ```{r}
 contribution_data <- select(contributions, transaction_type, transaction_amt, cand_id, state)
 house_election_data <- select(house_elections, fec_id, party, ge_winner)
