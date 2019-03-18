@@ -36,7 +36,7 @@ contributions_to_elections <- contribution_data %>%
 
 ```{r}
 ggplot(contributions_to_elections, aes(x = party, y = transaction_amt)) +
-  geom_bar(stat = "identity") +
+  geom_bar(stat = "identity", aes(fill = transaction_type), position = "dodge") +
   facet_wrap(~ state)
 ```
 
