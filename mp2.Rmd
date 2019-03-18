@@ -26,12 +26,13 @@ contribution_data <- select(contributions, transaction_type, transaction_amt, ca
 house_election_data <- select(house_elections, fec_id, party, ge_winner)
 ```
 
-
 ```{r, message = FALSE}
-contributions_to_elections <- contributions %>%
-  inner_join(house_elections, by = c("cand_id" = "fec_id"))
-
+contributions_to_elections <- contribution_data %>%
+  inner_join(house_election_data, by = c("cand_id" = "fec_id")) %>%
+  filter(transaction_type %in% c("24K", "24E"))
 ```
 
+
 > Word count: `r wordcountaddin::word_count()`
+
 
