@@ -27,25 +27,32 @@ Join datasets to get contribution and election data together
 ```{r, message = FALSE}
 contributions_to_elections <- contribution_data %>%
   inner_join(house_election_data, by = c("cand_id" = "fec_id")) %>%
-  filter(transaction_type %in% c("24K", "24E")) %>%
+  filter(transaction_type %in% c("24A", "24E")) %>%
   filter(party %in% c("D", "R")) %>%
   group_by(state)
 ```
 
 Look at total transactions per state to determine which states have the most transactions to use in analysis
 ```{r}
-contributions_to_elections %>%
+top_states <- contributions_to_elections %>%
   group_by(state) %>%
   summarize(total_transactions = sum(transaction_amt)) %>%
   arrange(desc(total_transactions))
 ```
 
+Filter the data to only include the states with the top total transaction amounts
 ```{r}
-ggplot(contributions_to_elections, aes(x = party, y = transaction_amt)) +
+top_contribution_states <- contributions_to_elections %>%
+  filter(state %in% c('VA', 'DC', 'MD', 'CA', 'IL', 'TX', 'PA', 'FL', 'NY', 'CO'))
+```
+
+Graph the transaction amounts for the top states
+```{r}
+ggplot(top_contribution_states, aes(x = party, y = transaction_amt)) +
   geom_bar(stat = "identity", aes(fill = transaction_type), position = "dodge") +
-  scale_y_continuous(limits, breaks, labels) +
-  xlab("Political Party") +
-  ylab("Transactions A")
+  #scale_y_continuous(limits, breaks, labels) +
+  #xlab("Political Party") +
+  #ylab("Transactions A")
   facet_wrap(~ state)
 ```
 
