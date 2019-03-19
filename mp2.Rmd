@@ -7,10 +7,7 @@ output:
     code_folding: show
 ---
 
-
 ## Loading the data
-
-
 
 ```{r, message = FALSE}
 library(tidyverse)
@@ -20,12 +17,13 @@ load("committees.rda")
 load("contributions.rda")
 ```
 
-
+Filter for the variables that we will examine
 ```{r}
 contribution_data <- select(contributions, transaction_type, transaction_amt, cand_id, state)
 house_election_data <- select(house_elections, fec_id, party, ge_winner)
 ```
 
+Join datasets to get contribution and election data together
 ```{r, message = FALSE}
 contributions_to_elections <- contribution_data %>%
   inner_join(house_election_data, by = c("cand_id" = "fec_id")) %>%
@@ -34,12 +32,22 @@ contributions_to_elections <- contribution_data %>%
   group_by(state)
 ```
 
+Look at total transactions per state to determine which states have the most transactions to use in analysis
+```{r}
+contributions_to_elections %>%
+  group_by(state) %>%
+  summarize(total_transactions = sum(transaction_amt)) %>%
+  arrange(desc(total_transactions))
+```
+
 ```{r}
 ggplot(contributions_to_elections, aes(x = party, y = transaction_amt)) +
   geom_bar(stat = "identity", aes(fill = transaction_type), position = "dodge") +
+  scale_y_continuous(limits, breaks, labels) +
+  xlab("Political Party") +
+  ylab("Transactions A")
   facet_wrap(~ state)
 ```
-
 
 > Word count: `r wordcountaddin::word_count()`
 
