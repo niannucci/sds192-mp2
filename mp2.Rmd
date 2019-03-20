@@ -11,6 +11,7 @@ output:
 
 ```{r, message = FALSE}
 library(tidyverse)
+library(ggthemes)
 load("house_elections.rda")
 load("candidates.rda")
 load("committees.rda")
@@ -53,9 +54,39 @@ ggplot(top_contribution_states, aes(x = party, y = transaction_amt)) +
   #scale_y_continuous(limits, breaks, labels) +
   #xlab("Political Party") +
   #ylab("Transactions A")
-  facet_wrap(~ state)
+  facet_wrap(~ state) +
+  theme_stata() + 
+  scale_color_stata()
+```
+
+Total amount of money each party spend for opposing
+```{r}
+opposing_total <- function(party_name) {
+  contributions_to_elections %>%
+    filter(transaction_type == "24E") %>%
+    group_by(party) %>%
+    filter(party == party_name) %>%
+    summarize(total = sum(transaction_amt)) %>%
+    head(1)
+}
+opposing_total(party_name = "D")
+opposing_total(party_name = "R")
+```
+
+
+Total amount of money each party spend for supporting
+```{r}
+supporting_total <- function(party_name) {
+  contributions_to_elections %>%
+    filter(transaction_type == "24A") %>%
+    group_by(party) %>%
+    filter(party == party_name) %>%
+    summarize(total = sum(transaction_amt)) %>%
+    head(1)
+}
+supporting_total(party_name = "D")
+supporting_total(party_name = "R")
 ```
 
 > Word count: `r wordcountaddin::word_count()`
-
 
