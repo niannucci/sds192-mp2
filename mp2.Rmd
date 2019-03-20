@@ -90,5 +90,7 @@ supporting_total(party_name = "D")
 supporting_total(party_name = "R")
 ```
 
+This data tells us that the amount of money spent by each party varies significantly in each state, and how they spend their money (opposing a candidate or supporting another) is also different for each state. 
+
 > Word count: `r wordcountaddin::word_count()`
 
