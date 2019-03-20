@@ -19,7 +19,7 @@ load("contributions.rda")
 ```
 
 First, we filtered two datasets (one on contrubutions and one on house elections information) for the variables that we will examine; the type of transaction (for or opposing a candidate), the political party that the trasaction is in regards to, the transaction amount, and the state in which the transaction occurred. 
-```{r}
+```{r, message = FALSE}
 contribution_data <- select(contributions, transaction_type, transaction_amt, cand_id, state)
 house_election_data <- select(house_elections, fec_id, party, ge_winner)
 ```
@@ -34,7 +34,7 @@ contributions_to_elections <- contribution_data %>%
 ```
 
 We wrangled the data to look at total transactions per state to determine which states have the most transactions; we decided to use the ten states with the highest transaction amounts to use in our analysis.
-```{r}
+```{r, message = FALSE}
 top_states <- contributions_to_elections %>%
   group_by(state) %>%
   summarize(total_transactions = sum(transaction_amt)) %>%
@@ -42,13 +42,13 @@ top_states <- contributions_to_elections %>%
 ```
 
 Next we filtered the dataset to only include the states with the top total transaction amounts.
-```{r}
+```{r, message = FALSE}
 top_contribution_states <- contributions_to_elections %>%
   filter(state %in% c('VA', 'DC', 'MD', 'CA', 'IL', 'TX', 'PA', 'FL', 'NY', 'CO'))
 ```
 
 We then graphed the transaction amounts for the top states according to if they were opposing or supporting a candidate, and which party they were for.
-```{r}
+```{r, message = FALSE}
 ggplot(top_contribution_states, aes(x = party, y = transaction_amt)) +
   geom_bar(stat = "identity", aes(fill = transaction_type), position = "dodge") +
   scale_y_continuous(breaks = c(0, 400000, 800000, 1200000, 1600000, 2000000), labels = c(0, 0.4, 0.8, 1.2, 1.6, 2.0)) +
@@ -62,7 +62,7 @@ ggplot(top_contribution_states, aes(x = party, y = transaction_amt)) +
 ```
 
 Total amount of money each party spend for opposing
-```{r}
+```{r, message = FALSE}
 opposing_total <- function(party_name) {
   contributions_to_elections %>%
     filter(transaction_type == "24E") %>%
@@ -76,8 +76,8 @@ opposing_total(party_name = "R")
 ```
 
 
-Total amount of money each party spend for supporting
-```{r}
+We calculated the total amount of money each party spent supporting a candidate. 
+```{r, message = FALSE}
 supporting_total <- function(party_name) {
   contributions_to_elections %>%
     filter(transaction_type == "24A") %>%
