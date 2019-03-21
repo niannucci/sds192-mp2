@@ -18,7 +18,7 @@ load("committees.rda")
 load("contributions.rda")
 ```
 
-The power of negative gossip, rumor, information is strong. A research suggests that it can even influence our visual processing and can last in our memory for longer period of time compared to positive or neutral information. When in elections, some candidates emphasize their opponents’ past mistakes or spread false negative rumors. 
+The power of negative gossip, rumor, information is strong. [A research](http://science.sciencemag.org/content/332/6036/1446) suggests that it can even influence our visual processing and can last in our memory for longer period of time compared to positive or neutral information. When in elections, some candidates emphasize their opponents’ past mistakes or spread false negative rumors. 
 
 In this mini-project, using the data collected from the Federal Election Committee, our aim is to show how Democrats and Republican candidate use their campaign contributions and how those two major parties differ overall.
 
@@ -99,5 +99,5 @@ supporting_total(party_name = "R")
 
 This data tells us that the amount of money spent by each party varies significantly in each state, and how they spend their money (opposing a candidate or supporting another) is also different for each state. 
 
-> Word count: `r wordcountaddin::word_count()`
+
 
