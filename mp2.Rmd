@@ -18,6 +18,11 @@ load("committees.rda")
 load("contributions.rda")
 ```
 
+The power of negative gossip, rumor, information is strong. A research suggests that it can even influence our visual processing and can last in our memory for longer period of time compared to positive or neutral information. When in elections, some candidates emphasize their opponents’ past mistakes or spread false negative rumors. 
+
+In this mini-project, using the data collected from the Federal Election Committee, our aim is to show how Democrats and Republican candidate use their campaign contributions and how those two major parties differ overall.
+
+
 First, we filtered two datasets (one on contrubutions and one on house elections information) for the variables that we will examine; the type of transaction (for or opposing a candidate), the political party that the trasaction is in regards to, the transaction amount, and the state in which the transaction occurred. 
 ```{r, message = FALSE}
 contribution_data <- select(contributions, transaction_type, transaction_amt, cand_id, state)
@@ -48,6 +53,8 @@ top_contribution_states <- contributions_to_elections %>%
 ```
 
 We then graphed the transaction amounts for the top states according to if they were opposing or supporting a candidate, and which party they were for.
+
+When the data is presented as a bar chart, the audience can easily compare the numbers. As our purpose of this project was to illustrate the difference in Democrats and Republican spend their campaign contributions, we decided that this data presentation should work the best.
 ```{r, message = FALSE}
 ggplot(top_contribution_states, aes(x = party, y = transaction_amt)) +
   geom_bar(stat = "identity", aes(fill = transaction_type), position = "dodge") +
