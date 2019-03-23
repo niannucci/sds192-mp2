@@ -7,8 +7,6 @@ output:
     code_folding: hide
 ---
 
-## Loading the data
-
 ```{r, message = FALSE}
 library(tidyverse)
 library(ggthemes)
@@ -18,12 +16,12 @@ load("committees.rda")
 load("contributions.rda")
 ```
 
-The power of negative gossip, rumor, information is strong. [A research](http://science.sciencemag.org/content/332/6036/1446) suggests that it can even influence our visual processing and can last in our memory for longer period of time compared to positive or neutral information. When in elections, some candidates emphasize their opponents’ past mistakes or spread false negative rumors. 
+The power of negative gossip, rumors, and questionable information is strong. [A research study](http://science.sciencemag.org/content/332/6036/1446) suggests that it can even influence our visual processing, and can last in our memory for a longer period of time compared to positive or neutral information. In elections, it is common for some candidates to emphasize their opponents’ past mistakes, or spread false negative rumors about their opponents. An independent expenditure refers to money [spent by an individual, group, or political party, not in cooperation with the candidate](https://www.fec.gov/help-candidates-and-committees/making-independent-expenditures/). This is often spent on media such as TV advertisments or websites to support and oppose certain candidates.
 
-In this mini-project, using the data collected from the Federal Election Committee, our aim is to show how Democrats and Republican candidate use their campaign contributions and how those two major parties differ overall.
+In this mini-project, our goal is to use the data collected by the Federal Election Committee to show how expenditures differ between Democratic and Republican candidates; does one party consistently recieve expenditures supporting candiadtes as compared to opposing them? We also aim to examine how these differences bewteen the partys' expenditures differed between states. ^[https://github.com/niannucci/sds192-mp2]
 
 
-First, we filtered two datasets (one on contrubutions and one on house elections information) for the variables that we will examine; the type of transaction (for or opposing a candidate), the political party that the trasaction is in regards to, the transaction amount, and the state in which the transaction occurred. 
+First, we filtered two datasets (one on contrubutions and one on house elections information) for the variables that we will examine; the type of transaction (for or opposing a candidate), the political party that the transaction is in regards to, the transaction amount, and the state in which the transaction occurred. 
 ```{r, message = FALSE}
 contribution_data <- select(contributions, transaction_type, transaction_amt, cand_id, state)
 house_election_data <- select(house_elections, fec_id, party, ge_winner)
@@ -38,7 +36,7 @@ contributions_to_elections <- contribution_data %>%
   group_by(state)
 ```
 
-We wrangled the data to look at total transactions per state to determine which states have the most transactions; we decided to use the ten states with the highest transaction amounts to use in our analysis.
+We wrangled the data to look at total transactions per state to determine which states have the most overal transactions; we decided to use the ten states with the highest transaction amounts to use in our analysis, as this suggets sa greater polticial influence or importance in these states.
 ```{r, message = FALSE}
 top_states <- contributions_to_elections %>%
   group_by(state) %>%
@@ -54,7 +52,7 @@ top_contribution_states <- contributions_to_elections %>%
 
 We then graphed the transaction amounts for the top states according to if they were opposing or supporting a candidate, and which party they were for.
 
-When the data is presented as a bar chart, the audience can easily compare the numbers. As our purpose of this project was to illustrate the difference in Democrats and Republican spend their campaign contributions, we decided that this data presentation should work the best.
+When the data is presented as a bar chart, the audience can easily compare the aomunts of transactions, as we mapped transction amount to the y-axis. As our purpose of this project was to illustrate the difference between Democrats and Republicans' expenditures, we decided that this data presentation would work the best, with political party mapped to the x-axis. We mapped color to whether the transaction was for opposing or supproting a candidate, with opposing bars filled in red due to the negative connotation of the color to make it easier to interpret. 
 ```{r, message = FALSE}
 ggplot(top_contribution_states, aes(x = party, y = transaction_amt)) +
   geom_bar(stat = "identity", aes(fill = transaction_type), position = "dodge") +
@@ -68,7 +66,7 @@ ggplot(top_contribution_states, aes(x = party, y = transaction_amt)) +
   scale_color_stata()
 ```
 
-Total amount of money each party spend for opposing
+We calculated the total amount of money each party contributed to opposing a candidate, and found that almost independent expenditures by Republicans were almost $10 million more than Democrats regarding opposing the other candidates. 
 ```{r, message = FALSE}
 opposing_total <- function(party_name) {
   contributions_to_elections %>%
@@ -83,7 +81,7 @@ opposing_total(party_name = "R")
 ```
 
 
-We calculated the total amount of money each party spent supporting a candidate. 
+We then calculated the total amount of money each party spent supporting a candidate, and found that in this case the total independent expenditures were much higher overall than for oppsing, but the amount was greater for Democrats than Republicans. 
 ```{r, message = FALSE}
 supporting_total <- function(party_name) {
   contributions_to_elections %>%
@@ -97,7 +95,9 @@ supporting_total(party_name = "D")
 supporting_total(party_name = "R")
 ```
 
-This data tells us that the amount of money spent by each party varies significantly in each state, and how they spend their money (opposing a candidate or supporting another) is also different for each state. 
+This data tells us that the amount of money spent by each party varies significantly in each state, and how the money is spent (opposing a candidate or supporting another) is also different for each state. 
+
+From our analysis, we can conclude that political parties have different amounts of influence in different states, and thus expenditures differ based on if it is more beneficial to support a member of a party, or spend money opposing a member of a different party in that particular area.
 
 > Word count: `r wordcountaddin::word_count()`
 
