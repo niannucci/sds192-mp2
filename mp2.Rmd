@@ -64,7 +64,8 @@ ggplot(top_contribution_states, aes(x = party, y = transaction_amt)) +
   facet_wrap(~ state) +
   scale_fill_manual(name = "Type of Transaction",label = c('Opposing Candidate', 'Supporting Candidate'), values = c('red', 'purple')) +
   theme_stata() + 
-  scale_color_stata()
+  scale_color_stata()  +
+ theme(axis.text.y=element_text(angle=0 ,hjust=0.5,vjust=1))
 ```
 
 We calculated the total amount of money each party contributed to opposing a candidate, and found that almost independent expenditures by Republicans were almost $10 million more than Democrats regarding opposing the other candidates. 
